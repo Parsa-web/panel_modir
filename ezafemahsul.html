@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="fa">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title data-i18n-key="addProduct.title">پارسا فروشگاه — افزودن محصول</title>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary-color: #6366f1;
+  --primary-dark: #4f46e5;
+  --secondary-color: #8b5cf6;
+  --accent-color: #22d3ee;
+  --card-bg: #ffffff;
+  --bg: #f5f7fb;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 30px 60px rgba(79, 70, 229, 0.18);
+  --glass: rgba(255, 255, 255, 0.65);
+}
+
+body {
+  font-family: 'Vazirmatn', system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.18), transparent 55%) center/cover,
+              radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.12), transparent 50%) center/cover,
+              linear-gradient(135deg, #eef2ff 0%, #f8fafc 100%);
+  color: var(--text-primary);
+  direction: rtl;
+  min-height: 100vh;
+  padding: 36px 18px 48px;
+}
+
+.app {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.page-header {
+  background: var(--glass);
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), transparent 60%);
+  pointer-events: none;
+}
+
+.page-title-group {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 620px;
+}
+
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  background: rgba(99, 102, 241, 0.12);
+  padding: 8px 14px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.page-badge i {
+  font-size: 15px;
+}
+
+.page-title-group h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-title-group p {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+
+.header-illustration {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(99, 102, 241, 0.16), rgba(139, 92, 246, 0.18));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  color: var(--primary-dark);
+  font-size: 48px;
+}
+
+.main {
+  background: var(--glass);
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(18px);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.main:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: flex-start;
+}
+
+.upload-panel {
+  position: relative;
+  background: linear-gradient(160deg, rgba(99, 102, 241, 0.85), rgba(139, 92, 246, 0.85));
+  border-radius: 20px;
+  padding: 28px 24px;
+  color: white;
+  box-shadow: 0 18px 40px rgba(79, 70, 229, 0.35);
+  overflow: hidden;
+}
+
+.upload-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.28), transparent 55%);
+  pointer-events: none;
+}
+
+.upload-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.upload-headline h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.upload-headline p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.upload-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.18);
+  transition: transform 0.3s ease, background 0.3s ease;
+  color: #ffffff;
+  text-align: center;
+  border: 1px dashed rgba(255, 255, 255, 0.7);
+}
+
+.upload-label:hover {
+  transform: translateY(-4px);
+  background: rgba(15, 23, 42, 0.28);
+}
+
+.upload-label i {
+  font-size: 34px;
+}
+
+.upload-label span {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.preview {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(15, 23, 42, 0.12);
+  margin-top: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  display: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+label i {
+  font-size: 14px;
+  color: var(--primary-dark);
+}
+
+input[type=text],
+input[type=number],
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.8px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+  background: white;
+}
+
+.price-field {
+  max-width: 220px;
+}
+
+.actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+button {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 12px 25px rgba(99, 102, 241, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 35px rgba(79, 70, 229, 0.35);
+}
+
+.button-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.tips-card {
+  margin-top: 12px;
+  background: rgba(15, 23, 42, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.tips-card span {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tips-card span i {
+  color: #ffffff;
+}
+
+@media (max-width: 992px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-illustration {
+    width: 88px;
+    height: 88px;
+    font-size: 36px;
+  }
+
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-panel {
+    order: 2;
+  }
+}
+
+@media (max-width: 576px) {
+  body {
+    padding: 24px 12px 36px;
+  }
+
+  .main {
+    padding: 24px;
+  }
+
+  .page-title-group h1 {
+    font-size: 26px;
+  }
+
+  .form-card {
+    grid-template-columns: 1fr;
+  }
+
+  .price-field {
+    max-width: none;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="page-header">
+      <div class="page-title-group">
+        <span class="page-badge" data-i18n-key="addProduct.badge">
+          <i class="fa-solid fa-star"></i>
+          محصول جدید
+        </span>
+        <h1 data-i18n-key="addProduct.title">افزودن محصول تازه به فروشگاه</h1>
+        <p data-i18n-key="addProduct.description">
+          اطلاعات محصول را با دقت وارد کنید تا تجربه خرید مشتریان بهتر شود. تصویر جذاب، قیمت دقیق و دسته‌بندی مناسب
+          به دیده‌شدن سریع‌تر محصول کمک می‌کند.
+        </p>
+      </div>
+      <div class="header-illustration">
+        <i class="fa-solid fa-box-open"></i>
+      </div>
+    </header>
+
+    <section class="main">
+      <div class="form-layout">
+        <aside class="upload-panel">
+          <div class="upload-content">
+            <div class="upload-headline">
+              <h2 data-i18n-key="addProduct.uploadTitle">آپلود تصویر محصول</h2>
+              <p data-i18n-key="addProduct.uploadDesc">تصویر واضح و باکیفیت جذابیت محصول را چند برابر می‌کند. فرمت‌های رایج مانند JPG یا PNG پشتیبانی می‌شود.</p>
+            </div>
+            <input type="file" id="pimage" accept="image/*" hidden>
+            <label for="pimage" class="upload-label">
+              <i class="fa-solid fa-camera"></i>
+              <span data-i18n-key="addProduct.selectImage">انتخاب تصویر از دستگاه</span>
+            </label>
+            <img id="preview" class="preview" alt="پیش‌نمایش تصویر محصول" data-i18n-attr="alt" data-i18n-key="addProduct.imagePreview" />
+            <div class="tips-card">
+              <span><i class="fa-solid fa-lightbulb"></i> <span data-i18n-key="addProduct.tip1">نسبت تصویر پیشنهادی ۱:۱ یا ۴:۳ است.</span></span>
+              <span><i class="fa-solid fa-circle-check"></i> <span data-i18n-key="addProduct.tip2">حداکثر حجم فایل پیشنهادی ۲ مگابایت.</span></span>
+            </div>
+          </div>
+        </aside>
+
+        <form id="productForm" autocomplete="off">
+          <div class="form-card">
+            <div class="form-field">
+              <label for="pname"><i class="fa-solid fa-tag"></i> <span data-i18n-key="addProduct.name">نام محصول</span></label>
+              <input id="pname" placeholder="مثال: چراغ مطالعه رومیزی مدل Aurora" type="text" required data-i18n-key="addProduct.namePlaceholder" data-i18n-attr="placeholder" />
+            </div>
+            <div class="form-field price-field">
+              <label for="pprice"><i class="fa-solid fa-coins"></i> <span data-i18n-key="addProduct.price">قیمت (تومان)</span></label>
+              <input id="pprice" type="number" min="0" step="1" placeholder="مثال: 1150000" required data-i18n-key="addProduct.pricePlaceholder" data-i18n-attr="placeholder" />
+            </div>
+            <div class="form-field">
+              <label for="pcat"><i class="fa-solid fa-boxes-stacked"></i> <span data-i18n-key="addProduct.category">دسته محصول</span></label>
+              <select id="pcat" required>
+                <option value="" data-i18n-key="addProduct.categorySelect">انتخاب دسته...</option>
+                <option value="الکترونیک" data-i18n-key="addProduct.category1">الکترونیک</option>
+                <option value="خانه و آشپزخانه" data-i18n-key="addProduct.category2">خانه و آشپزخانه</option>
+                <option value="کتاب و نوشت‌افزار" data-i18n-key="addProduct.category3">کتاب و نوشت‌افزار</option>
+                <option value="پوشاک" data-i18n-key="addProduct.category4">پوشاک</option>
+                <option value="زیبایی و سلامت" data-i18n-key="addProduct.category5">زیبایی و سلامت</option>
+                <option value="ورزش و سفر" data-i18n-key="addProduct.category6">ورزش و سفر</option>
+                <option value="سایر" data-i18n-key="addProduct.category7">سایر</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="pdesc"><i class="fa-solid fa-pen-clip"></i> <span data-i18n-key="addProduct.description">توضیح کوتاه (اختیاری)</span></label>
+              <input id="pdesc" type="text" placeholder="ویژگی شاخص محصول را در یک جمله بنویسید" data-i18n-key="addProduct.descriptionPlaceholder" data-i18n-attr="placeholder" />
+            </div>
+          </div>
+
+          <div class="actions-row">
+            <button id="addProductBtn" type="submit">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span data-i18n-key="addProduct.submit">ثبت محصول</span>
+            </button>
+            <span class="button-subtitle" data-i18n-key="addProduct.submitNote">پس از ثبت، محصول در لیست مدیریت محصولات نمایش داده می‌شود.</span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+<script src="settings.js"></script>
+<script src="add.js"></script>
+<script>
+  // اعمال ترجمه‌ها در بارگذاری صفحه
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.applyTranslations && window.getCurrentLanguage) {
+      const lang = window.getCurrentLanguage();
+      window.applyTranslations(lang);
+    }
+  });
+</script>
+</body>
+</html>
